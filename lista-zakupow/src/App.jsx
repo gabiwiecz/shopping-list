@@ -4,14 +4,14 @@ import ShopList from './components/ShopList';
 import './App.css';
 
 function App() {
-  const [count, setShops] = useState([]); //to jest do przechowywania sklepow
+  const [shops, setShops] = useState([]); //to jest do przechowywania sklepow
 
   const saveToLocalStorage = (data) => { //to do zapisywania w local storage
     localStorage.setItem('shops', JSON.stringify(data));
   };
 
   useEffect(() => { //to laduje dane z localstorage przy odpaleniu strony
-    const savesShops = localStorage.getItem('shops');
+    const savedShops = localStorage.getItem('shops');
     if(savedShops) {
       setShops(JSON.parse(savedShops));
     }
@@ -24,7 +24,7 @@ function App() {
       name: shopName,
       products: []
     };
-    const updatedShops = [...ShopList, newShop];
+    const updatedShops = [...shops, newShop];
     setShops(updatedShops);
     saveToLocalStorage(updatedShops);
   };
@@ -54,7 +54,7 @@ function App() {
 
   //usuwa zaznaczony produkt z listy
   const checkProduct = (shopId, productId) => {
-    const updatedShops = shop.map(shop => {
+    const updatedShops = shops.map(shop => {
       if (shop.id === shopId) {
         const filteredProducts = shop.products.filter(
           product => product.id !== productId
@@ -70,7 +70,7 @@ function App() {
   return (
     <div className='app'>
       <h1>Lista Zakupów</h1>
-      <addShop onAdd={addShop} />
+      <AddShop onAdd={addShop} />
       <div className='shops-container'>
         {shops.map(shop => (
           <ShopList
