@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AddShop from "./components/AddShop";
+import AddShop from './components/AddShop';
 import ShopList from './components/ShopList';
 import './App.css';
 
