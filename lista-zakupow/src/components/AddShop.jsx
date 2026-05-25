@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function AddShop({onAdd}) {
     const [shopName, setShopName] = useState('');
 
+    const proponowaneSklepy = ['Lidl', 'Rossmann', 'Żabka'];
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,7 +13,24 @@ function AddShop({onAdd}) {
         }
     };
 
+        const dodajProponowany = (nazwa) => {
+            onAdd(nazwa);
+        };
+
     return (
+        <div>
+            <div className="proponowane-sklepy">
+                {proponowaneSklepy.map(nazwa => (
+                    <button
+                    key={nazwa}
+                    type="button"
+                    onClick={() => dodajProponowany(nazwa)}
+                    className="proponowany-btn"
+                    >
+                        {nazwa}
+                    </button>
+                ))}
+            </div>
         <form onSubmit={handleSubmit} className="add-shop">
             <input type="text"
             placeholder="Nazwa sklepu (np.Dino)"
@@ -21,6 +39,7 @@ function AddShop({onAdd}) {
             />
             <button type="submit">Dodaj sklep</button>
         </form>
+        </div>
     );
 }
 
