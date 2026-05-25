@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddProduct from './AddProduct';
-import ProductItem from './ProdusctItem';
+import ProductItem from './ProductItem';
 
 function ShopList({shop, onDeleteShop, onAddProduct, onCheckProduct}) {
     const [showAddProduct, setShowAddProduct] = useState(false);
@@ -14,7 +14,7 @@ function ShopList({shop, onDeleteShop, onAddProduct, onCheckProduct}) {
                 </button>
             </div>
 
-            <div className="product-list">
+            <div className="products-list">
                 {shop.products.map(product => (
                     <ProductItem 
                     key={product.id}
@@ -26,7 +26,7 @@ function ShopList({shop, onDeleteShop, onAddProduct, onCheckProduct}) {
 
             {showAddProduct ? (
                 <AddProduct
-                odAdd={(productName) => {
+                onAdd={(productName) => {
                     onAddProduct(shop.id, productName);
                     setShowAddProduct(false);
                 }}

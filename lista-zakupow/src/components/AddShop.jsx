@@ -9,7 +9,7 @@ function AddShop({onAdd}) {
 
 
     const handleSubmit = (e) => {
-        e.preventDeafult();
+        e.preventDefault();
         console.log("Kliknięto przycisk! Nazwa:", shopName);  // ← DODAJ TO!
 
         if (shopName.trim()) {
