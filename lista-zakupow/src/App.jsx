@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import AddShop from './components/AddShop';
-import ShopList from './components/ShopList';
+import { Link, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import SyncPage from './pages/SyncPage';
 import Status from './components/Status';
 import './App.css';
 
@@ -23,7 +24,8 @@ function App() {
     const newShop = {
       id: Date.now(),
       name: shopName,
-      products: []
+      products: [],
+      synced: false
     };
     const updatedShops = [...shops, newShop];
     setShops(updatedShops);
@@ -68,23 +70,46 @@ function App() {
     saveToLocalStorage(updatedShops);
   };
 
+  const [syncStatus, setSyncStatus] = useState('ready');
+
+  const manualSync = () => {
+    setSyncStatus('synchronization . . .');
+    setTimeout(() => {
+      localStorage.setItem('lastSync', new Date().toISOString());
+      setSyncStatus('synchronized');
+      alert('Dane zostały zapisane!');
+    }, 1000);
+  };
+
+
   
   return (
     <div className='app'>
       <Status/>
-      <h1>Lista Zakupów</h1>
-      <AddShop onAdd={addShop} />
-      <div className='shops-container'>
-        {shops.map(shop => (
-          <ShopList
-          key={shop.id}
-          shop={shop}
-          onDeleteShop={deleteShop}
-          onAddProduct={addProduct}
-          onCheckProduct={checkProduct}
-          />
-        ))}
-      </div>
+        <nav className="nav">
+          <Link to="/">Strona główna</Link>
+          <Link to="/sync">Synchronizacja</Link>
+        </nav>
+
+        <Routes>
+
+          <Route path="/" element={
+            <HomePage 
+            shops={shops}
+            onAddShop={addShop}
+            onDeleteShop={deleteShop}
+            onAddProduct={addProduct}
+            onCheckProduct={checkProduct}
+            />
+          } />
+
+          <Route path="/sync" element={
+            <SyncPage
+            syncStatus={syncStatus}
+            onManualSync={manualSync}
+            />
+          } />
+        </Routes>
     </div>
   );
 }
