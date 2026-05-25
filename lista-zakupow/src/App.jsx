@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AddShop from './components/AddShop';
 import ShopList from './components/ShopList';
+import Status from './components/Status';
 import './App.css';
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
   
   return (
     <div className='app'>
+      <Status/>
       <h1>Lista Zakupów</h1>
       <AddShop onAdd={addShop} />
       <div className='shops-container'>
