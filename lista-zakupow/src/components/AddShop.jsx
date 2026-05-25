@@ -4,16 +4,9 @@ function AddShop({onAdd}) {
     const [shopName, setShopName] = useState('');
 
 
-     // SPRAWDZAMY CZY onAdd ISTNIEJE
-  console.log("AddShop otrzymał onAdd:", onAdd);  // ← DODAJ TO!
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Kliknięto przycisk! Nazwa:", shopName);  // ← DODAJ TO!
-
         if (shopName.trim()) {
-            console.log("Wywołuję onAdd z:", shopName);  // ← DODAJ TO!
             onAdd(shopName);
             setShopName('');
         }

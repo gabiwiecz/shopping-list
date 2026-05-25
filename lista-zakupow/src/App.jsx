@@ -67,16 +67,9 @@ function App() {
     saveToLocalStorage(updatedShops);
   };
 
-
-  console.log("Aktualne sklepy:", shops);
   
   return (
     <div className='app'>
-
-<button onClick={() => console.log("Ręczne sprawdzenie:", shops)}>
-  Sprawdź sklepy (kliknij)
-</button>
-
       <h1>Lista Zakupów</h1>
       <AddShop onAdd={addShop} />
       <div className='shops-container'>
