@@ -1,3 +1,4 @@
+const API_URL = 'http://localhost:3000';
 import { useState, useEffect } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -12,12 +13,46 @@ function App() {
     localStorage.setItem('shops', JSON.stringify(data));
   };
 
-  useEffect(() => { //to laduje dane z localstorage przy odpaleniu strony
+  {/*useEffect(() => { //to laduje dane z localstorage przy odpaleniu strony
     const savedShops = localStorage.getItem('shops');
     if(savedShops) {
       setShops(JSON.parse(savedShops));
     }
-  }, []);
+  }, []);*/}
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+        if(navigator.onLine){
+
+            const response = await fetch(
+                `${API_URL}/items`
+            );
+
+            const data = await response.json();
+
+            setShops(data);
+
+            saveToLocalStorage(data);
+
+        } else {
+
+            const saved =
+            localStorage.getItem('shops');
+
+            if(saved){
+
+                setShops(JSON.parse(saved));
+
+            }
+
+        }
+
+    };
+
+    fetchData();
+
+}, []);
 
   //dodawanie sklepow
   const addShop = (shopName) => {
@@ -72,14 +107,77 @@ function App() {
 
   const [syncStatus, setSyncStatus] = useState('ready');
 
-  const manualSync = () => {
+  {/*const manualSync = () => {
     setSyncStatus('synchronization . . .');
     setTimeout(() => {
       localStorage.setItem('lastSync', new Date().toISOString());
       setSyncStatus('synchronized');
       alert('Dane zostały zapisane!');
     }, 1000);
+  };*/}
+  const manualSync = async() => {
+
+    setSyncStatus('synchronizing');
+
+    try{
+
+        await fetch(
+            `${API_URL}/sync`,
+            {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(shops)
+            }
+        );
+
+        const syncedData = shops.map(
+            shop => ({
+                ...shop,
+                synced:true
+            })
+        );
+
+        setShops(syncedData);
+
+        saveToLocalStorage(syncedData);
+
+        setSyncStatus('synchronized');
+
+    }
+
+    catch{
+
+        setSyncStatus('sync error');
+
+    }
+
+};
+//synchronizacja online
+useEffect(()=>{
+
+  const handleOnline = ()=>{
+
+      manualSync();
+
   };
+
+  window.addEventListener(
+      'online',
+      handleOnline
+  );
+
+  return ()=>{
+
+      window.removeEventListener(
+          'online',
+          handleOnline
+      );
+
+  };
+
+},[shops]);
 
 
   
