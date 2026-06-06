@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://shopping-backend-gq3m.onrender.com';
 import { useState, useEffect } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
